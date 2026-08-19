@@ -1,0 +1,24 @@
+# My first ymal file remember (clave-valor)
+my_profile:
+  name: "Daniel Castro"
+  age: 30
+  address:
+    street: "87 Dr Martínez del Río"
+    city: "Cuauhtemoc"
+    state: "Mexico City"
+    zip: "06720"
+
+# Objeto 2 de prueba
+my_profile_2:
+  name: "Daniel Castro Recillas"
+  profession: "Software Engineer"
+  University: "Universidad Autónoma de México"
+  promedio: 8.5
+  job_experience:
+    - company: "Aeromexico"
+      position: "QA Engineer"
+      years: 10
+    - company: "Spear education"
+      position: "Software Engineer"
+      years: 2
+      
