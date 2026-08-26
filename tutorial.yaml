@@ -2,6 +2,8 @@
 my_profile:
   name: "Daniel Castro"
   age: 30
+  email: "crdaniel10@gmail.com"
+  phone: "+52 55 0348 5678"
   address:
     street: "87 Dr Martínez del Río"
     city: "Cuauhtemoc"
@@ -9,7 +11,7 @@ my_profile:
     zip: "06720"
 
 # Objeto 2 de prueba
-my_profile_2:
+professional_profile:
   name: "Daniel Castro Recillas"
   profession: "Software Engineer"
   University: "Universidad Autónoma de México"
@@ -17,8 +19,7 @@ my_profile_2:
   job_experience:
     - company: "Aeromexico"
       position: "QA Engineer"
-      years: 10
+      years: 8
     - company: "Spear education"
       position: "Software Engineer"
       years: 2
-      

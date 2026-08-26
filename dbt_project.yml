@@ -1,0 +1,171 @@
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: "master_data_model"
+version: "1.0.0"
+dbt-cloud:
+  project-id: 70471823513014
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: "default"
+
+# These configurations specify where dbt should look for different types of files.
+# The `model-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros", "snowflake_semantic_macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target" # directory which will store compiled SQL files
+clean-targets:
+  # directories to be removed by `dbt clean`
+  - "target"
+  - "logs"
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+
+# In dbt, the default materialization for a model is a view. This means, when you run
+# dbt run or dbt build, all of your models will be built as a view in your data platform.
+# The configuration below will override this setting for models in the example folder to
+# instead be materialized as tables. Any models you add to the root of the models folder will
+# continue to be built as views. These settings can be overridden in the individual model files
+# using the `{{ config(...) }}` macro.
+
+vars:
+  sales_reporting_start_date: "2023-01-01"
+  sales_reporting_end_date: "2023-12-31"
+  sales_reporting_snapshot_date: "current_date"
+  hist_as_of_date: "current_date"
+
+  # Used to map customer MSA RAW column names to readable identifiers used in DATA MART reports.
+  customer_msa_columns_mapping:
+    {
+      "custentity_cdocs_cmg_msa": "cdocs_cmg_msa",
+      "custentity_cdocs_msa": "cdocs_msa",
+      "custentity_cdocs_resident_msa": "cdocs_resident_msa",
+      "custentity_cust_study_club_msa": "study_club_msa",
+      "custentity_faultclubmsa": "faculty_club_msa",
+      "custentity_mp_msa": "mp_msa",
+      "custentity_pspmsa": "psp_msa",
+      "custentity_spear_sps_assigned_msa": "spear_sps_assigned_msa",
+      "custentity_spear_sps_assigned_psc": "assigned_practice_growth_partner",
+      "custentity_spearonlinemsa": "spear_online_msa",
+      "custentity_sps_msa": "sps_msa",
+    }
+
+  # Changes the source of the DynamoDB RAW models to `stg` or `prd` to keep consistency across models.
+  dynamodb_environment: "prd"
+
+  # Preferred warehouse size for Dynamic Tables. Depends on the DBT CLOUD environment selected.
+
+  stage_preferred_warehouse: "DEV_ELT_DBT_S_WH"
+  prod_preferred_warehouse: "PRD_ELT_DBT_S_WH"
+
+models:
+  +post-hook:
+    - "{% if (config.materialized == 'table' or config.materialized == 'incremental') %} ALTER TABLE {{ this }} SET CHANGE_TRACKING = TRUE{% endif %}"
+
+  master_data_model:
+    gold:
+      +persist_docs:
+        relation: true
+        columns: true
+    
+      business_mappings:
+        +static_analysis: strict
+        +schema: business_mappings
+        +tags: ["business_mappings"]
+        +description: "This layer contains models that perform business logic transformations and mappings, such as the capacity count by attendee category. These models are used to create a unified and consistent view of the data for reporting and analysis purposes."
+
+      semantic:
+        +static_analysis: strict
+        +schema: semantic
+        +tags: ["semantic", "ai"]
+
+      base_layer:
+        +static_analysis: strict
+        +tags: ["analytics_base"]
+        +schema: base
+        +persist_docs:
+          relation: true
+          columns: true
+
+      data_mart:
+        +schema: data_mart
+        +static_analysis: strict
+        +tags: ["data_mart"]
+
+      business_logic:
+        +static_analysis: strict
+        +schema: business
+
+      report_mart:
+        +schema: report_mart
+
+      data_sync_integration:
+        +static_analysis: strict
+        +tags: ["external_integration"]
+
+        syncari_controller_layer:
+          +static_analysis: strict
+          +tags: ["external_integration", "syncari"]
+          +database: prd_edw_db
+          +schema: analytics_base
+
+        gainsight_controller_layer:
+          +static_analysis: strict
+          +database: prd_edw_db
+          +schema: analytics_base
+          +tags: ["external_integration", "gainsight"]
+          +grants:
+            select: ["PRD_GAINSIGHT_DB_OWNER_ROLE"]
+
+        hubspot_controller_layer:
+          +static_analysis: strict
+          +schema: hubspot_controller
+          +tags: ["external_integration", "production", "hubspot"]
+
+        hubspot_fivetran_activation_layer:
+          +static_analysis: strict
+          +schema: hubspot_fivetran_activations
+          +tags:
+            [
+              "external_integration",
+              "production",
+              "hubspot",
+              "fivetran_activation",
+            ]
+
+        netsuite_fivetran_activation_layer:
+          +static_analysis: strict
+          +schema: netsuite_fivetran_activations
+          +tags:
+            [
+              "external_integration",
+              "production",
+              "netsuite",
+              "fivetran_activation",
+            ]
+
+    silver:
+
+      stage_layer:
+        +static_analysis: baseline
+        +schema: stage
+
+      intermediate_layer:
+        +static_analysis: baseline
+        +schema: intermediate
+
+      raw_layer:
+        +static_analysis: baseline
+        +schema: raw
+
+    error_review:
+      +static_analysis: baseline
+      +schema: error_review
