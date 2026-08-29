@@ -1,7 +1,6 @@
 # My first ymal file remember (clave-valor)
 my_profile:
   name: "Daniel Castro"
-  age: 30
   email: "crdaniel10@gmail.com"
   phone: "+52 55 0348 5678"
   address:
@@ -10,11 +9,17 @@ my_profile:
     state: "Mexico City"
     zip: "06720"
 
+# Objeto perfil educación
+education_profile:
+  degree_1: "B. D. Mathematics"
+  University_1: "Universidad a Distancia de México"  
+  degree_2: "B. Sc. in Informatics"
+  University_2: "Universidad Autónoma de México"
+
+
 # Objeto 2 de prueba
 professional_profile:
-  name: "Daniel Castro Recillas"
   profession: "Software Engineer"
-  University: "Universidad Autónoma de México"
   promedio: 8.5
   job_experience:
     - company: "Aeromexico"
