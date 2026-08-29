@@ -4,7 +4,7 @@ my_profile:
   email: "crdaniel10@gmail.com"
   phone: "+52 55 0348 5678"
   address:
-    street: "87 Dr Martínez del Río"
+    street: "Dr Martínez del Río 87"
     city: "Cuauhtemoc"
     state: "Mexico City"
     zip: "06720"
@@ -20,7 +20,6 @@ education_profile:
 # Objeto 2 de prueba
 professional_profile:
   profession: "Software Engineer"
-  promedio: 8.5
   job_experience:
     - company: "Aeromexico"
       position: "QA Engineer"
@@ -30,4 +29,3 @@ professional_profile:
       years: 2
 
 # Agregamos comentarios a nuestro archivo yaml
-# Otra línea de comentario
