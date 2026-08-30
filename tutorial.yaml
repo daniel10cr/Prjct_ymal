@@ -1,6 +1,6 @@
 # My first ymal file remember (clave-valor)
 my_profile:
-  name: "Daniel Castro"
+  name: "Daniel Castro Recillas"
   email: "crdaniel10@gmail.com"
   phone: "+52 55 0348 5678"
   address:
@@ -23,7 +23,7 @@ professional_profile:
   job_experience:
     - company: "Aeromexico"
       position: "QA Engineer"
-      years: 8
+      years: 6
     - company: "Spear education"
       position: "Software Engineer"
       years: 2
