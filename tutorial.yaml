@@ -28,4 +28,14 @@ professional_profile:
       position: "Software Engineer"
       years: 2
 
-# Agregamos comentarios a nuestro archivo yaml
+# Objeto 3 para skills
+skills_profile:
+  programming_languages: 
+    - "Python"
+    - "Java"
+    - "C++"
+  frameworks:
+    - "Django"
+    - "Flask"
+
+# Cambiamos esta línea para checar la nueva branch
