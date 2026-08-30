@@ -35,7 +35,7 @@ skills_profile:
     - "Java"
     - "C++"
   frameworks:
+    - "Node"
     - "Django"
-    - "Flask"
 
 # Cambiamos esta línea para checar la nueva branch
